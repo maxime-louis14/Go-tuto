@@ -1,0 +1,41 @@
+Caractéristiques
+Le langage Go a été créé pour la programmation système et a depuis été étendu aux applications, ce qui constitue la même cible que le C et surtout le C++. Il s'agit d'un langage impératif et concurrent. Sa vitesse de compilation (due à la simplicité de sa syntaxe) le fait parfois utiliser comme langage de script.
+
+Concurrence
+Go intègre directement, comme Java, les traitements de code en concurrence. Le mot clé go permet à un appel de fonction de s'exécuter en concurrence avec la goroutine courante10. Une goroutine, ainsi nommée par analogie lointaine avec les coroutines, est un fil d'exécution supervisé par l'ordonnanceur inclus dans le runtime11. Le programme prendra alors avantage de la topologie de l'ordinateur pour exécuter au mieux les goroutines, pas forcément dans un nouveau thread, mais il est aussi possible qu'un groupe de goroutines soit multiplexé sur un groupe de threads12.
+
+Pour appeler une fonction f, on écrit f(). Pour l'appeler en tant que goroutine, on écrit simplement go f(), ce qui est très semblable au call f task; de PL/I, langage gérant également le multitâche depuis 1970.
+
+Les goroutines communiquent entre elles par passage de messages, en envoyant ou en recevant des messages sur des canaux13.
+
+Ces messages synchronisent les goroutines entre elles conformément au modèle CSP, considéré par les auteurs comme plus intuitif que le modèle multi-threadé (avec synchronisation par sémaphores comportant des verrous, notion introduite elle aussi par Dijkstra).
+
+Faux-amis
+Dans l'état actuel du langage (2018)
+
+Le langage contient des aspects de Pascal et de C, mais on s'expose à beaucoup d'erreurs si on oublie momentanément qu'on n'est ni en Pascal ni en C. Ainsi a:=b alloue une variable a en lui affectant la valeur et le type de b, mais si la variable a déjà été allouée il faudra se contenter d'écrire a=b. À ne pas confondre avec a==b (égalité de valeurs). L'expression derrière un if n'a pas besoin de parenthèses, mais l'expression à exécuter en cas de réussite du test devra être entre accolades. Dans son état actuel, le compilateur ne tolère pas qu'une variable déclarée ne soit pas utilisée, ce qui encourage certes de bonnes pratiques, mais rend fort pénibles les tâtonnements de mise au point des programmes
+Collections d'objets
+	Cette section est vide, insuffisamment détaillée ou incomplète. Votre aide est la bienvenue ! Comment faire ?
+Go connaît les types scalaires (entiers int ou int64, flottants float, chaînes string), les tableaux indexés par des entiers à partir de 0, les maps qui sont des collections d'objets indexés par des clés (nommés dictionnaires, hashes ou tableaux associatifs dans d'autres langages) et des slices qui sont une généralisation dynamique des tableaux.
+
+Il accède aisément aux fichiers en lecture comme en écriture, que ce soit en mode ligne, ou caractère, ou bien en absorbant le fichier complet, par les packages os et io.
+
+Système de types
+Go a un système de type statique, fortement typé, structurel et sûr, fondé sur l'inférence de types avec la possibilité d'utiliser un typage explicite.
+
+Pour donner un exemple, écrire s := "Camélia", qui déclare, alloue et initialise s, est possible et n'oblige pas à écrire var s string = "Camélia", qui reste cependant accepté.
+
+La compatibilité des types composés est fondée sur les propriétés plutôt que sur le nom. C'est-à-dire que deux types composés seront équivalents si leurs propriétés sont équivalentes : même nom pour la propriété et équivalence de type. C'est le typage structurel.
+
+Cela a pour conséquence que le langage n'est pas objet au sens classique (soit avec classes, soit avec prototype), cependant les concepteurs du langage ont fait un choix plus original pour un langage statique. Il est possible de définir des interfaces portant des méthodes décrivant le comportement d'un objet (il est aussi facilement possible de mélanger plusieurs interfaces en une seule)14. Les fonctions Go peuvent déclarer accepter un argument de cette interface. Un objet déclarant toutes les méthodes de cette interface, avec la même signature, peut être passé en argument de cette méthode. La vérification du type est effectuée statiquement par le compilateur.
+
+Le fait que Go ne soit pas objet au sens classique fait que Go n'a pas d'héritage de type et pas de sous-classage. Ceci permet de contourner les problèmes posés par ces systèmes tels l'héritage multiple dans les langages qui le permettent (en C++ par exemple), ou l'héritage simple (en Java par exemple). Grâce à l'équivalence de types fondée sur les propriétés, Go n'a pas besoin d'héritage de type. Le sous-classage est émulé par l'« embarquement de type ». Ceci permet de mélanger facilement deux bases de code conçues indépendamment, sans qu'elles aient besoin de partager des types communs.
+
+La visibilité des structures, attributs, variables, constantes, méthodes, types de haut niveau et des fonctions hors de leur paquetage de déclaration est définie par la casse du premier caractère de leurs identificateurs.
+
+Runes
+Go travaille en Unicode aussi bien pour son code source que pour son traitement des chaînes. Sa littérature abandonne toutefois l'expression code points pour l'abréviation de runes. Des procédures permettent de transformer des représentations de caractère en runes (toute rune occupant une taille fixe15) et transformer par des procédures standards une suite de caractères Unicode en runes d'un tableau (une rune par élément), ainsi que l'inverse, sans avoir à jongler avec les représentations de longueur variables ni s'occuper de savoir si la machine est little-endian ou big-endian. La portabilité est donc assurée.
+
+Parler de runes évite les ambiguités qui seraient présentes avec caractère ou octet16. Pour explorer une chaîne, soit on utilise directement des fonctions de chaîne, soit on la parcourt de rune en rune.
+
+Les mises en capitales de caractères nationaux (par exemple "è"⇒ "È") se font simplement par unicode.ToUpper(r rune) rune. Les runes permettent de spécifier en tout caractère Unicode, thaï, chinois, grec, y compris du langage APL- et également toute émoticône s'y trouvant.
