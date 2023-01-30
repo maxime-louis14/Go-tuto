@@ -1,0 +1,18 @@
+package index
+
+// type Address struct {
+// 	street, city string
+// }
+
+// type Person struct {
+// 	Name string
+// 	Age  int
+// 	Addr Address
+// }
+
+// func index(){
+// 	var p Person
+// 	p.Name = "bob"
+// 	p.Addr.city = "Caen"
+// }
+
