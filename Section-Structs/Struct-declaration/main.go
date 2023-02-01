@@ -5,7 +5,7 @@ import (
 
 	// Tu importes de dossier player par le go.mod a la racine du projet.
 	// avec go mod nom que tu veux lui donner
-	"github.com/maxime-louis14/Go-tuto/Jeu_du_Pendu/player"
+	"github.com/maxime-louis14/Go-tuto/Section-Structs/Struct-declaration/player"
 )
 
 func main() {
